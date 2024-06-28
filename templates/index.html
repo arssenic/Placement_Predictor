@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Result Prediction</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: url('https://www.shu.ac.uk/-/media/home/student-placements/support-cta.jpg?iar=0&sc_lang=en&hash=8860CA497A2B3FD69BA3B59477FABCF3') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+      overflow: hidden;
+    }
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.6); /* White overlay with 60% opacity */
+      z-index: 0;
+    }
+    h1 {
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      font-size: 2em;
+      animation: fadeInDown 1s ease-in-out;
+      z-index: 1;
+      color: #000; /* Change font color to black */
+    }
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      width: 320px;
+      margin-top: 20px;
+      color: #333;
+      animation: fadeInUp 1s ease-in-out;
+      z-index: 1;
+      position: relative;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    input[type="text"]:focus {
+      border-color: #6a11cb;
+      box-shadow: 0 0 8px rgba(106, 17, 203, 0.2);
+      outline: none;
+    }
+    input[type="submit"] {
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      transition: background 0.3s, transform 0.2s;
+    }
+    input[type="submit"]:hover {
+      background: linear-gradient(to right, #2575fc, #6a11cb);
+      transform: scale(1.05);
+    }
+    .result {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      width: 280px;
+      height: 10px; /* Set the desired height */
+      text-align: center;
+      color: #333;
+      font-weight: bold;
+      transition: background 0.3s;
+      display: none; /* Hidden by default */
+    }
+    .result.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .result.success {
+      color: green;
+    }
+    .result.error {
+      color: red;
+    }
+    .result i {
+      margin-right: 10px;
+      font-size: 1.5em;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1><i class="fas fa-graduation-cap"></i> Student Placement Predictor</h1>
+  <form method="post" action="/predict">
+      <label for="cgpa">CGPA</label>
+      <input type="text" id="cgpa" name="cgpa" value="{{ cgpa }}" required>
+
+      <label for="iq">IQ</label>
+      <input type="text" id="iq" name="iq" value="{{ iq }}" required>
+
+      <label for="profile_score">Profile Score</label>
+      <input type="text" id="profile_score" name="profile_score" value="{{ profile_score }}" required>
+
+      {% if result %}
+          <div class="result show {% if result == 'placed' %}success{% else %}error{% endif %}">
+              <i class="fas {% if result == 'placed' %}fa-check-circle{% else %}fa-times-circle{% endif %}"></i>
+              {{ result }}
+          </div>
+      {% else %}
+          <div class="result">Your prediction will appear here.</div>
+      {% endif %}
+
+      <input type="submit" value="Predict">
+  </form>
+</body>
+</html>
